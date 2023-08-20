@@ -1,0 +1,9 @@
+POST http://localhost:5000/
+###
+
+POST http://localhost:5000/geturl
+Content-Type:application/json
+
+{
+ "url":"https://blog.zecky.online/"
+}
