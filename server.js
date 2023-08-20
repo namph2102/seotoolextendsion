@@ -21,14 +21,7 @@ function isValidURL(url) {
   // Kiểm tra chuỗi với biểu thức chính quy
   return urlRegex.test(url);
 }
-app.post("/", MiddleWare.HandleLimitRequest, (req, res) => {
-  try {
-    console.log(process.env.NODE_ENV);
-    res.json({ message: "oke" });
-  } catch (error) {
-    res.json({ message: error.message });
-  }
-});
+
 const REGES_URL = /^(https?:\/\/[^/]+)(?:\/|$)/;
 function coverLink(url, link) {
   if (!link) return "";
@@ -39,7 +32,7 @@ function coverLink(url, link) {
   }
   return link;
 }
-app.post("/geturl", MiddleWare.HandleLimitRequest, async (req, res) => {
+app.post("/", MiddleWare.HandleLimitRequest, async (req, res) => {
   try {
     const data = req.body.url;
     RedisServer.incr("totaluser");
@@ -104,14 +97,17 @@ app.post("/geturl", MiddleWare.HandleLimitRequest, async (req, res) => {
             listTagsHeading: listTagsHeading,
           });
         } catch (error) {
-          console.log(error);
+          console.log(error.message);
           res.status(404).json({ message: error.message });
         }
       });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(404).json({ message: error.message });
   }
+});
+app.get("/", function (req, res) {
+  res.send("home page");
 });
 app.listen(PORT, () => {
   console.log("start sever PORT: ", PORT);
